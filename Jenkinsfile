@@ -29,7 +29,7 @@ pipeline {
         stage('Test Docker Image') { 
             steps { 
                 script { 
-                    docker container run -p 300:80 registry
+                    docker container run  -p 300:80 minageorge/udacity-devops-capstone
                 }
             } 
         }
