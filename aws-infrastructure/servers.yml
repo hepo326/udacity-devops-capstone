@@ -63,5 +63,8 @@ Resources:
             sudo apt update
             sudo apt install jenkins -y
             sudo systemctl start jenkins
+            sudo apt-get update
+            sudo apt install docker.io -y
+            sudo apt install tidy -y
 
 
