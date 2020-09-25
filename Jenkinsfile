@@ -29,9 +29,7 @@ pipeline {
         stage('Test Docker Image') { 
             steps { 
                 
-                script { 
-                     dockerImage.withRun('-p 200:80')
-                }                
+               echo "ttttt"            
     
         }
     }
