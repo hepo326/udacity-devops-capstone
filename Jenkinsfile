@@ -25,14 +25,6 @@ pipeline {
                 }
             } 
         }
-
-        stage('Test Docker Image') { 
-            steps { 
-                
-               sh 'docker container run -d -p 200:80 ${registry}'      
-    
-        }
-    }
     
     }
 }
