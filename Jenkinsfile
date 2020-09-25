@@ -26,6 +26,14 @@ pipeline {
             } 
         }
 
+        stage('Test Docker Image') { 
+            steps { 
+                
+                sh  docker container run  -p 300:80 minageorge/udacity-devops-capstone
+                
+            
+        }
+    }
     
     }
 }
