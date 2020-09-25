@@ -31,7 +31,9 @@ pipeline {
                 script { 
                     docker container run  -p 300:80 minageorge/udacity-devops-capstone
                 }
-            } 
+            
         }
+    }
+    
     }
 }
