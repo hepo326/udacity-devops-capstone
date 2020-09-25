@@ -30,7 +30,7 @@ pipeline {
             steps { 
                 
                 script { 
-                     dockerImage.push().withRun('-p 200:80')
+                     dockerImage.withRun('-p 200:80')
                 }                
     
         }
