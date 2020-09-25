@@ -4,8 +4,8 @@ services:
   
   app:
     build:
-      context : .
-      dockerfile : Dockerfile
+    
+    image: minageorge/udacity-devops-capstone
       
     ports:
       - '8080:80'
