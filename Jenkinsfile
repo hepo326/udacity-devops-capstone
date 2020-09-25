@@ -29,7 +29,7 @@ pipeline {
         stage('Test Docker Image') { 
             steps { 
                 
-               echo "ttttt"            
+               sh 'docker container run  -p 80:200 ${registry}'      
     
         }
     }
