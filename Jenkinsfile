@@ -2,7 +2,6 @@ pipeline {
      environment { 
         registry = "minageorge/udacity-devops-capstone" 
         registryCredential = 'dockerhub' 
-        awsCredential = 'aws-eks' 
         dockerImage = '' 
     }
 
