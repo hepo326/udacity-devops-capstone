@@ -26,12 +26,12 @@ spec:
     spec:
       containers:
       - name: green
-        image: minageorge/udacity-devops-capstone:latest
+        image: minageorge/udacity-devops-capstone:1.0
         imagePullPolicy: Always
         ports:
         - containerPort: 80
           protocol: TCP
-          
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
