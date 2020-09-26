@@ -35,8 +35,8 @@ pipeline {
         steps { 
             script { 
                 
-                dockerImage = docker.build registry
-                docker.withRegistry( '', registryCredential + ${imageVersion}) { 
+                dockerImage = docker.build ('${registry} : + ${imageVersion}')
+                docker.withRegistry( '', registryCredential ) { 
                     dockerImage.push() 
                 
                 }
