@@ -51,6 +51,7 @@ pipeline {
                 sh '''
                     aws eks --region ${region} update-kubeconfig --name  ${cluster}
                     kubectl config use-context arn:aws:eks:${region}:209202834263:cluster/${cluster}
+                    kubectl delete deploy/udacity-capstone-deploy
                     kubectl apply -f ./${DEPLOYMENT_TYPE}-deployment.yml
                     docker image rm ${registry}:${imageVersion}
 
