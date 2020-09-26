@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blue
+spec:
+  type: LoadBalancer
+  selector:
+    app: blue
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blue
+spec:
+  selector:
+    matchLabels:
+      app: blue
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: blue
+    spec:
+      containers:
+      - name: blue
+        image: minageorge/udacity-devops-capstone:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  minReadySeconds: 10
