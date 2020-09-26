@@ -6,7 +6,7 @@ pipeline {
         cluster = 'Udacity-Capstone-cluster' 
         region = 'us-west-2'
         dockerImage = '' 
-        imageVersion = 'latest' 
+        imageVersion = '1.0' 
     }
 
 	agent any
