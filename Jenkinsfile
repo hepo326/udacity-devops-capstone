@@ -50,7 +50,7 @@ pipeline {
                 sh '''
                     aws eks --region ${region} update-kubeconfig --name  ${cluster}
                     kubectl config use-context arn:aws:eks:${region}:209202834263:cluster/${cluster}
-                    kubectl apply -f ./${DEPLOYMENT_TYPE}-controller.json
+                    kubectl apply -f ./${DEPLOYMENT_TYPE}-controller.yml
                     kubectl apply -f ./${DEPLOYMENT_TYPE}-service.json
                     kubectl rollout restart replicationcontroller/${DEPLOYMENT_TYPE}
                 '''

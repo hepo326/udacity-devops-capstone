@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: green
+spec:
+  replicas : 2
+  selector:
+    matchLabels:
+      app: green
+
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: green
+    spec:
+      containers:
+      - name: green
+        image: minageorge/udacity-devops-capstone:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 80
