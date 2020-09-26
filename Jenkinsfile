@@ -14,11 +14,11 @@ pipeline {
 
     stage('Lint') {
         steps {
-            sh 'tidy -q -e **/*.html'
+            sh 'tidy -q -e src/templates/*.html'
             sh '''docker run --rm -i hadolint/hadolint < Dockerfile'''
         }
     }
-    
+
     stage('Detect Deployment Type') { 
         steps { 
             script { 
