@@ -8,6 +8,7 @@
        }
     },
     "spec":{
+      "imagePullPolicy ": "Always",
        "ports": [
           {
             "port":80,
@@ -18,5 +19,8 @@
           "app":"green"
        },
        "type": "LoadBalancer"
+    },
+    "strategy":{
+       "type":"RollingUpdate"
     }
  }
