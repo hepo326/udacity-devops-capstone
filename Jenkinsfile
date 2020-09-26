@@ -6,34 +6,24 @@ pipeline {
         cluster = 'Udacity-Capstone-cluster' 
         region = 'us-west-2'
         dockerImage = '' 
-        deploymentType = 'blue'
+        imageVersion = '1.0' 
+
     }
 
 	agent any
 	stages {
 
-    stage('Building Docker Image') { 
-        steps { 
-            script { 
-                
-                dockerImage = docker.build registry
-                docker.withRegistry( '', registryCredential ) { 
-                    dockerImage.push() 
-                  }
-                }
-            } 
-        }
 
     stage('Detect Deployment Type') { 
         steps { 
             script { 
                 
                 if (env.BRANCH_NAME == 'development' || env.CHANGE_TARGET == 'development') {
-                       env.deploymentType = 'blue'
+                       env.DEPLOYMENT_TYPE = 'blue'
                  }
                 
                 else if (env.BRANCH_NAME == 'master' || env.CHANGE_TARGET == 'master') {
-                       env.deploymentType = 'green'
+                       env.DEPLOYMENT_TYPE = 'green'
                  }
     
             }
@@ -41,14 +31,28 @@ pipeline {
         
         }
 
+    stage('Building Docker Image') { 
+        steps { 
+            script { 
+                
+                dockerImage = docker.build registry
+                docker.withRegistry( '', registryCredential + ${imageVersion}) { 
+                    dockerImage.push() 
+                
+                }
+                }
+            } 
+        }
+
+
      stage('Deployment') {
         steps {
             withAWS(region: region, credentials: awsCredential) {
                 sh '''
                     aws eks --region ${region} update-kubeconfig --name  ${cluster}
                     kubectl config use-context arn:aws:eks:${region}:209202834263:cluster/${cluster}
-                    kubectl apply -f ./${deploymentType}-controller.json
-                    kubectl apply -f ./${deploymentType}-service.json
+                    kubectl apply -f ./${DEPLOYMENT_TYPE}-controller.json
+                    kubectl apply -f ./${DEPLOYMENT_TYPE}-service.json
                 '''
                }
              }
