@@ -22,7 +22,7 @@
              "containers":[
                 {
                    "name":"green",
-                   "image":"minageorge/udacity-devops-capstone",
+                   "image":"minageorge/udacity-devops-capstone:latest",
                    "ports":[
                       {
                          "name":"app",
