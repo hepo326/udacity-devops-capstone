@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: capstoneBlueGreen
+  name: udacity-capstone
 spec:
   type: LoadBalancer
   selector:
-    app: capstoneBlueGreen
+    app: udacity-capstone
   ports:
   - port: 80
     targetPort: 80
@@ -13,19 +13,19 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: capstoneBlueGreen
+  name: udacity-capstone
 spec:
   selector:
     matchLabels:
-      app: capstoneBlueGreen
+      app: udacity-capstone
   replicas: 3
   template:
     metadata:
       labels:
-        app: capstoneBlueGreen
+        app: udacity-capstone
     spec:
       containers:
-      - name: capstoneBlueGreen
+      - name: udacity-capstone
         image: minageorge/udacity-devops-capstone:1.0
         imagePullPolicy: Always
         ports:
