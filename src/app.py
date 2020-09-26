@@ -7,15 +7,9 @@ app = Flask(__name__)
 LOG = create_logger(app)
 LOG.setLevel(logging.INFO)
 
-@app.route("/test")
-def test():
-    html = f"<h3>TEEEEEEST</h3>"
-    return html.format(format)
-
-
 @app.route("/")
 def home():
-    html = f"<h3>Miiiiiiiiiii</h3>"
+    html = f"<h3>FINALLLLLLLLLLL.......</h3>"
     return html.format(format)
 
 if __name__ == "__main__":

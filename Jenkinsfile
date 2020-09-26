@@ -2,47 +2,28 @@ pipeline {
      environment { 
         registry = "minageorge/udacity-devops-capstone" 
         registryCredential = 'dockerhub' 
+        awsCredential = 'aws-eks' 
+        cluster = 'Udacity-Capstone-cluster' 
+        region = 'us-west-2'
         dockerImage = '' 
-        deploymentType = 'blue' 
+        imageVersion = 'latest' 
     }
 
 	agent any
 	stages {
 
-    stage('Building Docker Image') { 
-        steps { 
-            script { 
-                
-                dockerImage = docker.build registry + ":latest" 
-                
-                }
-            } 
-        }
-
-    stage('Push Docker Image') { 
-        steps { 
-            script { 
-                
-                docker.withRegistry( '', registryCredential ) { 
-                    dockerImage.push() 
-                
-                }
-            }
-        } 
-        
-        }
 
     stage('Detect Deployment Type') { 
         steps { 
             script { 
                 
                 if (env.BRANCH_NAME == 'development' || env.CHANGE_TARGET == 'development') {
-                       deploymentType = 'blue'
+                       env.DEPLOYMENT_TYPE = 'blue'
                  }
                 
                 
                 else if (env.BRANCH_NAME == 'master' || env.CHANGE_TARGET == 'master') {
-                       deploymentType = 'green'
+                       env.DEPLOYMENT_TYPE = 'green'
                  }
     
             }
@@ -50,32 +31,28 @@ pipeline {
         
         }
 
-    stage('Cluster config') {
-        steps {
-            withAWS(region:'us-west-2', credentials:'aws-eks') {
-                sh '''
-                    aws eks --region us-west-2 update-kubeconfig --name Udacity-Capstone-cluster
-                '''
-               }
-             }
-		}    
+    stage('Building Docker Image') { 
+        steps { 
+            script { 
+                
+                dockerImage = docker.build ('${registry}:${imageVersion}')
+                docker.withRegistry( '', registryCredential ) { 
+                    dockerImage.push() 
+                
+                }
+                }
+            } 
+        }
 
-     stage('Kubectl context') {
-        steps {
-            withAWS(region:'us-west-2', credentials:'aws-eks') {
-                sh '''
-                    kubectl config use-context arn:aws:eks:us-west-2:209202834263:cluster/Udacity-Capstone-cluster
-                '''
-               }
-             }
-		}     
 
      stage('Deployment') {
         steps {
-            withAWS(region:'us-west-2', credentials:'aws-eks') {
+            withAWS(region: region, credentials: awsCredential) {
                 sh '''
-                    kubectl apply -f ./${deploymentType}-controller.json
-                    kubectl apply -f ./${deploymentType}-service.json
+                    aws eks --region ${region} update-kubeconfig --name  ${cluster}
+                    kubectl config use-context arn:aws:eks:${region}:209202834263:cluster/${cluster}
+                    kubectl apply -f ./${DEPLOYMENT_TYPE}-deployment.yml
+
                 '''
                }
              }
