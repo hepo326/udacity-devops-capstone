@@ -1,14 +1,24 @@
-apiVersion: apps/v1
-kind: ReplicationController
+apiVersion: v1
+kind: Service
 metadata:
   name: green
 spec:
-  replicas : 2
+  type: LoadBalancer
+  selector:
+    app: green
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: green
+spec:
   selector:
     matchLabels:
       app: green
-
-  minReadySeconds: 5
+  replicas: 3
   template:
     metadata:
       labels:
@@ -17,6 +27,13 @@ spec:
       containers:
       - name: green
         image: minageorge/udacity-devops-capstone:latest
-        imagePullPolicy: "Always"
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
+          protocol: TCP
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  minReadySeconds: 10
