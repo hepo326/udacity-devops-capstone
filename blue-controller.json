@@ -22,7 +22,7 @@
              "containers":[
                 {
                    "name":"blue",
-                   "image":"minageorge/udacity-devops-capstone:1.0",
+                   "image":"minageorge/udacity-devops-capstone:latest",
                    "ports":[
                       {
 

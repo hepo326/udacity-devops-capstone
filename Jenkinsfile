@@ -6,7 +6,7 @@ pipeline {
         cluster = 'Udacity-Capstone-cluster' 
         region = 'us-west-2'
         dockerImage = '' 
-        imageVersion = '1.0' 
+        imageVersion = 'latest' 
     }
 
 	agent any
@@ -50,8 +50,8 @@ pipeline {
                 sh '''
                     aws eks --region ${region} update-kubeconfig --name  ${cluster}
                     kubectl config use-context arn:aws:eks:${region}:209202834263:cluster/${cluster}
-                    kubectl update -f ./${DEPLOYMENT_TYPE}-controller.json
-                    kubectl update -f ./${DEPLOYMENT_TYPE}-service.json
+                    kubectl apply -f ./${DEPLOYMENT_TYPE}-controller.json
+                    kubectl apply -f ./${DEPLOYMENT_TYPE}-service.json
                 '''
                }
              }
