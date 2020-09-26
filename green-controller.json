@@ -19,7 +19,6 @@
              }
           },
           "spec":{
-            "imagePullPolicy ": "Always",
              "containers":[
                 {
                    "name":"green",
@@ -33,10 +32,7 @@
                 }
              ]
           }
-          ,
-          "strategy":{
-            "type":"RollingUpdate"
-    }
+          
        }
     }
  }
