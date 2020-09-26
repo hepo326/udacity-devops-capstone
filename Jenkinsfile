@@ -34,13 +34,23 @@ pipeline {
 
     stage('Cluster config') {
         steps {
-            withAWS(region:'us-east-2', credentials:'aws-eks') {
+            withAWS(region:'us-west-2', credentials:'aws-eks') {
                 sh '''
                     aws eks --region us-west-2 update-kubeconfig --name Udacity-Capstone-cluster
                 '''
                }
              }
 		}    
-    
+
+     stage('Kubectl context') {
+        steps {
+            withAWS(region:'us-west-2', credentials:'aws-eks') {
+                sh '''
+                    kubectl config use-context arn:aws:eks:us-west-2:513423739163:cluster/Udacity-Capstone-cluster
+                '''
+               }
+             }
+		}     
+
     }
 }
