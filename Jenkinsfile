@@ -2,7 +2,11 @@ pipeline {
      environment { 
         registry = "minageorge/udacity-devops-capstone" 
         registryCredential = 'dockerhub' 
+        awsCredential = 'aws-eks' 
+        cluster = 'Udacity-Capstone-cluster' 
+        region = 'us-west-2'
         dockerImage = '' 
+        deploymentType = 'blue'
     }
 
 	agent any
@@ -13,22 +17,11 @@ pipeline {
             script { 
                 
                 dockerImage = docker.build registry
-                
-                }
-            } 
-        }
-
-    stage('Push Docker Image') { 
-        steps { 
-            script { 
-                
                 docker.withRegistry( '', registryCredential ) { 
                     dockerImage.push() 
-                
+                  }
                 }
-            }
-        } 
-        
+            } 
         }
 
     stage('Detect Deployment Type') { 
@@ -36,11 +29,11 @@ pipeline {
             script { 
                 
                 if (env.BRANCH_NAME == 'development' || env.CHANGE_TARGET == 'development') {
-                       env.DEPLOYMENT_TYPE = 'blue'
+                       env.deploymentType = 'blue'
                  }
                 
                 else if (env.BRANCH_NAME == 'master' || env.CHANGE_TARGET == 'master') {
-                       env.DEPLOYMENT_TYPE = 'green'
+                       env.deploymentType = 'green'
                  }
     
             }
@@ -50,12 +43,12 @@ pipeline {
 
      stage('Deployment') {
         steps {
-            withAWS(region:'us-west-2', credentials:'aws-eks') {
+            withAWS(region: region, credentials: awsCredential) {
                 sh '''
-                    aws eks --region us-west-2 update-kubeconfig --name Udacity-Capstone-cluster
-                    kubectl config use-context arn:aws:eks:us-west-2:209202834263:cluster/Udacity-Capstone-cluster
-                    kubectl apply -f ./${DEPLOYMENT_TYPE}-controller.json
-                    kubectl apply -f ./${DEPLOYMENT_TYPE}-service.json
+                    aws eks --region ${region} update-kubeconfig --name  ${cluster}
+                    kubectl config use-context arn:aws:eks:${region}:209202834263:cluster/${cluster}
+                    kubectl apply -f ./${deploymentType}-controller.json
+                    kubectl apply -f ./${deploymentType}-service.json
                 '''
                }
              }
