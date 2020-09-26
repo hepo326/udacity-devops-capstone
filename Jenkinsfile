@@ -7,7 +7,6 @@ pipeline {
         region = 'us-west-2'
         dockerImage = '' 
         imageVersion = '1.0' 
-
     }
 
 	agent any
