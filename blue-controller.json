@@ -25,6 +25,7 @@
                    "image":"minageorge/udacity-devops-capstone:latest",
                    "ports":[
                       {
+                         
                          "name":"app",
                          "containerPort":80
                       }
