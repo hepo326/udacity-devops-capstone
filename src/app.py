@@ -9,8 +9,7 @@ LOG.setLevel(logging.INFO)
 
 @app.route("/")
 def home():
-    html = f"<h3>FINALLLLLLLLLLL..44444444.....</h3>"
-    return html.format(format)
+    return render_template('index.html')
 
 if __name__ == "__main__":
 
