@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify,render_template
 from flask.logging import create_logger
 import logging
 
@@ -9,8 +9,7 @@ LOG.setLevel(logging.INFO)
 
 @app.route("/")
 def home():
-    html = f"<h3>FINALLLLLLLLLLL.......</h3>"
-    return html.format(format)
+    return render_template('index.html')
 
 if __name__ == "__main__":
 
