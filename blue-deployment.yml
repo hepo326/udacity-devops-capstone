@@ -32,6 +32,8 @@ spec:
         - containerPort: 80
           protocol: TCP
   strategy:
-    type: Recreate
-    rollingUpdate: null
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   minReadySeconds: 10
