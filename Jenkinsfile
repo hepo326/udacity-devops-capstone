@@ -51,12 +51,12 @@ pipeline {
              }
 		}     
 
-     stage('Blue deployment') {
+     stage('Green deployment') {
         steps {
             withAWS(region:'us-west-2', credentials:'aws-eks') {
                 sh '''
-                    kubectl apply -f ./blue-controller.json
-                    kubectl apply -f ./blue-service.json
+                    kubectl apply -f ./green-controller.json
+                    kubectl apply -f ./green-service.json
                 '''
                }
              }
