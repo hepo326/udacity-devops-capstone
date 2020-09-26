@@ -40,6 +40,7 @@ pipeline {
                        deploymentType = 'blue'
                  }
                 
+                
                 else if (env.BRANCH_NAME == 'master' || env.CHANGE_TARGET == 'master') {
                        deploymentType = 'green'
                  }
