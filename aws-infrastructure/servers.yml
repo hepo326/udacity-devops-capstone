@@ -115,4 +115,44 @@ Resources:
                   !Sub '${EnvironmentName}-PUB-SN-2'
              
               - Fn::ImportValue: 
-                  !Sub '${EnvironmentName}-PUB-SN-3'         
+                  !Sub '${EnvironmentName}-PUB-SN-3'      
+
+  NodeRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+          AssumeRolePolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+              -   Effect: Allow
+                  Principal:
+                      Service:
+                      -   ec2.amazonaws.com
+                  Action:
+                  -   "sts:AssumeRole"
+          ManagedPolicyArns:
+          -   "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+          -   "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+          -   "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"   
+
+  NodeGroup:
+      Type: 'AWS::EKS::Nodegroup'
+      DependsOn: Cluster
+      Properties:
+          ClusterName: !Sub '${EnvironmentName}-cluster'
+          NodeRole: !GetAtt NodeRole.Arn
+          InstanceTypes: 
+          -   t2.small
+          RemoteAccess:
+              Ec2SshKey: Udacity-Capstone-jenkins-kp     
+
+          Subnets:
+            - Fn::ImportValue: 
+                !Sub '${EnvironmentName}-PUB-SN-2'
+            
+            - Fn::ImportValue: 
+                !Sub '${EnvironmentName}-PUB-SN-3'     
+                
+          ScalingConfig:
+              DesiredSize: 1
+              MinSize: 1
+              MaxSize: 1                              
