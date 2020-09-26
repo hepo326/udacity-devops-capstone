@@ -3,7 +3,6 @@ pipeline {
         registry = "minageorge/udacity-devops-capstone" 
         registryCredential = 'dockerhub' 
         dockerImage = '' 
-        deploymentType = 'blue' 
     }
 
 	agent any
@@ -37,11 +36,11 @@ pipeline {
             script { 
                 
                 if (env.BRANCH_NAME == 'development' || env.CHANGE_TARGET == 'development') {
-                       deploymentType = 'blue'
+                       env.DEPLOYMENT_TYPE = 'blue'
                  }
                 
                 else if (env.BRANCH_NAME == 'master' || env.CHANGE_TARGET == 'master') {
-                       deploymentType = 'green'
+                       env.DEPLOYMENT_TYPE = 'green'
                  }
     
             }
@@ -73,8 +72,8 @@ pipeline {
         steps {
             withAWS(region:'us-west-2', credentials:'aws-eks') {
                 sh '''
-                    kubectl apply -f ./${deploymentType}-controller.json
-                    kubectl apply -f ./${deploymentType}-service.json
+                    kubectl apply -f ./${DEPLOYMENT_TYPE}-controller.json
+                    kubectl apply -f ./${DEPLOYMENT_TYPE}-service.json
                 '''
                }
              }
